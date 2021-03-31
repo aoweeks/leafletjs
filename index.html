@@ -43,7 +43,7 @@
 <script>
 
     var map = L.map('mapid')
-        .setView([51.44234574255226,-2.563333511352539], 9);
+        .setView([51.44234574255226,-2.563333511352539], 14);
 
     L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png', {
         maxZoom: 20,
@@ -67,9 +67,25 @@
         popupAnchor: [0, -25]
     });
 
-    var geoJson = {"type": "FeatureCollection","features": [{"type": "Feature","properties": {},"geometry": {"type": "LineString","coordinates": [[-2.5634407997131348,51.44242390034042],[-2.5635045021772385,51.442381268836186],[-2.5635816156864166,51.44231314193797],[-2.563521936535835,51.44224041740687],[-2.563397884368896,51.44226549484447],[-2.5633972138166428,51.44230979828391],[-2.563468962907791,51.44232609859515]]}},{"type": "Feature","properties": {},"geometry": {"type": "Point","coordinates": [-2.56312295794487,51.442321501072065]}},{"type": "Feature","properties": {},"geometry": {"type": "Point","coordinates": [-2.5639182329177856,51.442539673930575]}},{"type": "Feature","properties": {},"geometry": {"type": "Polygon","coordinates": [[[-2.562738060951233,51.44276369708389],[-2.5629204511642456,51.44260989026104],[-2.5623732805252075,51.442422646473226],[-2.562131881713867,51.442573110291896],[-2.5623947381973267,51.44277038432532],[-2.562738060951233,51.44276369708389]]]}}]}
-
-    L.geoJson(geoJson).addTo(map);
+    var geoJson = { "type": "FeatureCollection", "features": [ { "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [ [ -2.5634407997131348, 51.44242390034042 ], [ -2.5635045021772385, 51.442381268836186 ], [ -2.5635816156864166, 51.44231314193797 ], [ -2.563521936535835, 51.44224041740687 ], [ -2.563397884368896, 51.44226549484447 ], [ -2.5633972138166428, 51.44230979828391 ], [ -2.563468962907791, 51.44232609859515 ] ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ -2.56312295794487, 51.442321501072065 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ -2.5639182329177856, 51.442539673930575 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [ [ [ -2.562738060951233, 51.44276369708389 ], [ -2.5629204511642456, 51.44260989026104 ], [ -2.5623732805252075, 51.442422646473226 ], [ -2.562131881713867, 51.442573110291896 ], [ -2.5623947381973267, 51.44277038432532 ], [ -2.562738060951233, 51.44276369708389 ] ] ] } } ] }
+    L.geoJson(geoJson, {
+        style: function(feature) {
+            return {
+                color: '#000',
+                weight: 0.5
+            }
+        },
+        pointToLayer: function(geoJsonPoint, latlng) {
+            return L.marker(latlng, {
+                icon: blackIcon
+            });
+        },
+        onEachFeature: function(feature, layer) {
+            if(feature.geometry.type ==='Point') {
+                layer.bindPopup(feature.geometry.coordinates.join(','));
+            }
+        }
+    }).addTo(map);
 
 </script>
 
