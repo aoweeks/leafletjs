@@ -67,19 +67,22 @@
         popupAnchor: [0, -25]
     });
 
-    var marker1 = L.marker( [51.44234574255226,-2.563333511352539], {
-        icon: blackIcon
-    });
+    var markers = [];
+    var coordinates = [
+        [51.44234574255226,-2.563333511352539],
+        [51.45234574255226,-2.553333511352539],
+        [51.42234574255226,-2.561333511352539]
+    ]
 
-    var marker2 = L.marker( [51.45234574255226,-2.553333511352539], {
-        icon: blackIcon
-    });
+    coordinates.forEach( coords => {
+        let marker = L.marker(coords, {
+            icon: blackIcon
+        })
 
-    var marker3 = L.marker( [51.42234574255226,-2.561333511352539], {
-        icon: blackIcon
-    });
+        markers.push(marker);
+    })
 
-    var featureGroup = L.featureGroup([marker1, marker2, marker3]).addTo(map);
+    var featureGroup = L.featureGroup(markers).addTo(map);
 
     map.fitBounds(featureGroup.getBounds(), {
         padding: [25,25]
