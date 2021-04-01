@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
 
 
     <style>
@@ -42,6 +46,8 @@
 
 
 <div id="mapid" style="width: 1500px; height: 700px;"></div>
+<input type="text" id="current_center" />
+
 <script>
 
     var map = L.map('mapid')
@@ -98,7 +104,6 @@
     var options = {units: 'kilometers'};
     map.on('mousemove', e => {
         var from = turf.point([e.latlng.lat, e.latlng.lng]);
-
         markers.forEach( marker => {
             
             var to = turf.point([marker.getLatLng().lat, marker.getLatLng().lng]);
@@ -115,6 +120,10 @@
 
         
     })
+
+    map.on('moveend', e => {
+
+    });
 
     // var geoJson = { "type": "FeatureCollection", "features": [ { "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [ [ -2.5634407997131348, 51.44242390034042 ], [ -2.5635045021772385, 51.442381268836186 ], [ -2.5635816156864166, 51.44231314193797 ], [ -2.563521936535835, 51.44224041740687 ], [ -2.563397884368896, 51.44226549484447 ], [ -2.5633972138166428, 51.44230979828391 ], [ -2.563468962907791, 51.44232609859515 ] ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ -2.56312295794487, 51.442321501072065 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ -2.5639182329177856, 51.442539673930575 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [ [ [ -2.562738060951233, 51.44276369708389 ], [ -2.5629204511642456, 51.44260989026104 ], [ -2.5623732805252075, 51.442422646473226 ], [ -2.562131881713867, 51.442573110291896 ], [ -2.5623947381973267, 51.44277038432532 ], [ -2.562738060951233, 51.44276369708389 ] ] ] } } ] }
     
