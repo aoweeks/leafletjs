@@ -49,16 +49,33 @@
             width: 100%;
             height: 50px;
         }
+
+        #overlay{
+            position: absolute;
+            z-index: 1000;
+            background: rgba(255,255,255,0.7);
+            padding: 10px;
+            left: 50%;
+            bottom: 0;
+            width: 200px;
+            margin: 10px;
+            margin-left: -100px;
+            border-radius: 10px;
+            box-shadow: 1px 1px 1px gray;
+            min-height: 200px;
+        }
     </style>
 	
 </head>
 <body>
 
 
-
+<div id="overlay">
+    <h2>Map Options</h2>
+    <input type="text" id="current_center" />
+    <button id="toggle_layer">Toggle</button>
+</div>
 <div id="mapid" ></div>
-<input type="text" id="current_center" />
-<button id="toggle_layer">Toggle</button>
 <script>
 
     $('#mapid').height(window.innerHeight);
