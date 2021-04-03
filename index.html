@@ -64,21 +64,47 @@
             box-shadow: 1px 1px 1px gray;
             min-height: 200px;
         }
+
+        #slide-in{
+            position: absolute;
+            z-index: 1000;
+            width: 250px;
+            background: white;
+            margin-left: -270px;
+            transition: 1.5s;
+            height: 100%;
+            padding: 10px;
+        }
+
+        #slide-in.in {
+            margin-left: 0px;
+        }
     </style>
 	
 </head>
 <body>
 
+<div id="slide-in">
+    <h2>More Information</h2>
+</div>
 
 <div id="overlay">
     <h2>Map Options</h2>
     <input type="text" id="current_center" />
     <button id="toggle_layer">Toggle</button>
+    <button id="advanced">Advanced Toggle</button>
 </div>
 <div id="mapid" ></div>
 <script>
 
     $('#mapid').height(window.innerHeight);
+    $(document).on('click', '#advanced', () => {
+        if($('#slide-in').hasClass('in')) {
+            $('#slide-in').removeClass('in');
+        } else {
+            $('#slide-in').addClass('in');
+        }
+    });
 
     var map = L.map('mapid')
         .setView([51.44234574255226,-2.563333511352539], 9);
