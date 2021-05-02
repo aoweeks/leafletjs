@@ -202,9 +202,18 @@
         countriesGeoJSON = L.geoJSON(json, {
             style: feature => {
                 return {
-                    fillOpacity: 0
+                    fillOpacity: 0,
+                    weight:0.3
                 };
-            }
+            },
+            onEachFeature: function(feature, layer) {
+                    layer.on('mouseover', function() {
+                        layer.setStyle({fillOpacity: 0.3})
+                    }),
+                    layer.on('mouseout', ()=> {
+                        layer.setStyle({fillOpacity: 0})
+                    })
+                }
         }).addTo(map);
 
         if(earthquakesGeoJSON) {
