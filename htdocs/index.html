@@ -189,13 +189,17 @@
         }
     });
 
+
+    var countriesGeoJSON = false;
+    var earthquakesGeoJSON = false;
+
     fetch('/countries.json' , {
         method: 'GET'
     })
     .then(response => response.json())
     .then(json => {
         console.log(json);
-        var geojson = L.geoJSON(json, {
+        countriesGeoJSON = L.geoJSON(json, {
             style: feature => {
                 return {
                     fillOpacity: 0
@@ -203,7 +207,9 @@
             }
         }).addTo(map);
 
-        map.fitBounds(geojson.getBounds());
+        if(earthquakesGeoJSON) {
+            earthquakesGeoJSON.bringToFront();
+        }
     })
     .catch(error => console.log(error.message));
 
@@ -215,7 +221,7 @@
     .then(response => response.json())
     .then(json => {
         console.log(json);
-        var geojson = L.geoJSON(json, {
+        earthquakesGeoJSON = L.geoJSON(json, {
             style: feature => {
                 return {
                     fillOpacity: 0.3,
@@ -229,9 +235,7 @@
             }
         }).addTo(map);
 
-        geoJson.bringToFront();
-
-        map.fitBounds(geojson.getBounds());
+        map.fitBounds(earthquakesGeoJSON.getBounds());
     })
     .catch(error => console.log(error.message));
 
