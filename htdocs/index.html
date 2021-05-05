@@ -55,14 +55,12 @@
             z-index: 1000;
             background: rgba(255,255,255,0.7);
             padding: 10px;
-            left: 50%;
-            bottom: 0;
-            width: 200px;
             margin: 10px;
             margin-left: -100px;
             border-radius: 10px;
             box-shadow: 1px 1px 1px gray;
             min-height: 200px;
+            right:0;
         }
 
         #slide-in{
@@ -90,8 +88,9 @@
 
 <div id="overlay">
     <h2>Map Options</h2>
-    <input type="text" id="current_center" />
-    <button id="toggle_layer">Toggle</button>
+    <div id="current_center" /></div>
+    <h5>Search Filter</h5>
+    <input id="search" type="text"/>
     <button id="advanced">Advanced Toggle</button>
 </div>
 <div id="mapid" ></div>
@@ -178,7 +177,7 @@
     // })
 
     map.on('moveend', e => {
-        $('#current_center').val(map.getCenter().lat + ',' + map.getCenter().lng);
+        $('#current_center').html(map.getCenter().lat + ',' + map.getCenter().lng);
     });
 
     $(document).on('click', '#toggle_layer', () => {
@@ -240,13 +239,32 @@
                 };
             },
             pointToLayer: function(geoJsonPoint, latlng)  {
-                return L.circle(latlng, 10000 * geoJsonPoint.properties.mag);
+                let html = '';
+                for(let prop in geoJsonPoint.properties) {
+                    html+= '<strong>' + prop + '</strong>: ' + geoJsonPoint[prop] + '<br />';
+                }
+                return L.circle(latlng, 10000 * geoJsonPoint.properties.mag).bindPopup(
+
+                );
             }
         }).addTo(map);
 
         map.fitBounds(earthquakesGeoJSON.getBounds());
     })
     .catch(error => console.log(error.message));
+
+    $(document).on('keyup', '#search', e => {
+        let userInput = e.target.value;
+        earthquakesGeoJSON.eachLayer( layer => {
+            console.log(layer);
+            if(layer.feature.properties.title.toLowerCase().indexOf(userInput.toLowerCase()) > -1){
+                layer.addTo(map);
+            } else{
+                map.removeLayer(layer);
+            }
+            console.log(layer);
+        })
+    });
 
     // var geoJson = { "type": "FeatureCollection", "features": [ { "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [ [ -2.5634407997131348, 51.44242390034042 ], [ -2.5635045021772385, 51.442381268836186 ], [ -2.5635816156864166, 51.44231314193797 ], [ -2.563521936535835, 51.44224041740687 ], [ -2.563397884368896, 51.44226549484447 ], [ -2.5633972138166428, 51.44230979828391 ], [ -2.563468962907791, 51.44232609859515 ] ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ -2.56312295794487, 51.442321501072065 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [ -2.5639182329177856, 51.442539673930575 ] } }, { "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [ [ [ -2.562738060951233, 51.44276369708389 ], [ -2.5629204511642456, 51.44260989026104 ], [ -2.5623732805252075, 51.442422646473226 ], [ -2.562131881713867, 51.442573110291896 ], [ -2.5623947381973267, 51.44277038432532 ], [ -2.562738060951233, 51.44276369708389 ] ] ] } } ] }
     
