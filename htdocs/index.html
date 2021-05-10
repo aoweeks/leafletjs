@@ -11,12 +11,15 @@
 	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <link rel="stylesheet" href="nouislider.css"/>
+    
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src='https://unpkg.com/@turf/turf@6.3.0/turf.min.js'></script>
     <script
         src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
+    <script src="nouislider.js"></script>
 
 
     <style>
@@ -77,6 +80,10 @@
         #slide-in.in {
             margin-left: 0px;
         }
+
+        #slider{
+            margin-top: 20px;
+        }
     </style>
 	
 </head>
@@ -92,6 +99,8 @@
     <h5>Search Filter</h5>
     <input id="search" type="text"/>
     <button id="advanced">Advanced Toggle</button>
+    <br />
+    <div id="slider"></div>
 </div>
 <div id="mapid" ></div>
 <script>
@@ -104,6 +113,8 @@
             $('#slide-in').addClass('in');
         }
     });
+
+
 
     var map = L.map('mapid')
         .setView([51.44234574255226,-2.563333511352539], 9);
@@ -147,7 +158,18 @@
         })
 
         markers.push(marker);
-    })
+    });
+
+    var slider = document.getElementById('slider');
+
+    noUiSlider.create(slider, {
+        start: [20, 80],
+        connect: true,
+        range: {
+            'min': 0,
+            'max': 100
+        }
+    });
 
     // var featureGroup = L.featureGroup(markers).addTo(map);
 
