@@ -239,13 +239,12 @@
                 };
             },
             pointToLayer: function(geoJsonPoint, latlng)  {
-                let html = '';
-                for(let prop in geoJsonPoint.properties) {
-                    html+= '<strong>' + prop + '</strong>: ' + geoJsonPoint[prop] + '<br />';
-                }
-                return L.circle(latlng, 10000 * geoJsonPoint.properties.mag).bindPopup(
-
-                );
+                var html = '';
+                var arrayOfProps = ['title', 'mag', 'place', 'time']
+                arrayOfProps.forEach(prop => {
+                    html+= '<strong>' + prop + '</strong>: ' + geoJsonPoint.properties[prop] + '<br />';
+                });
+                return L.circle(latlng, 10000 * (geoJsonPoint.properties.mag)).bindPopup(html);
             }
         }).addTo(map);
 
