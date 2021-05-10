@@ -82,7 +82,7 @@
         }
 
         #slider{
-            margin-top: 20px;
+            margin-top: 50px;
         }
     </style>
 	
@@ -160,16 +160,6 @@
         markers.push(marker);
     });
 
-    var slider = document.getElementById('slider');
-
-    noUiSlider.create(slider, {
-        start: [20, 80],
-        connect: true,
-        range: {
-            'min': 0,
-            'max': 100
-        }
-    });
 
     // var featureGroup = L.featureGroup(markers).addTo(map);
 
@@ -251,6 +241,8 @@
     .then(response => response.json())
     .then(json => {
         console.log(json);
+        var min = 0;
+        var max = 0;
         earthquakesGeoJSON = L.geoJSON(json, {
             style: feature => {
                 return {
@@ -261,6 +253,16 @@
                 };
             },
             pointToLayer: function(geoJsonPoint, latlng)  {
+                // Get min/max
+                if(geoJsonPoint.properties.mag < min || min == 0){
+                    min = geoJsonPoint.properties.mag;
+                }
+                
+                if(geoJsonPoint.properties.mag > max) {
+                    max = geoJsonPoint.properties.mag;
+                }
+
+                //Add popup html
                 var html = '';
                 var arrayOfProps = ['title', 'mag', 'place', 'time']
                 arrayOfProps.forEach(prop => {
@@ -271,8 +273,23 @@
         }).addTo(map);
 
         map.fitBounds(earthquakesGeoJSON.getBounds());
+
+        var slider = document.getElementById('slider');
+
+        noUiSlider.create(slider, {
+            start: [min + 1, max -1],
+            tooltips: true,
+            connect: true,
+            range: {
+                'min': min,
+                'max': max
+            }
+        });
     })
     .catch(error => console.log(error.message));
+
+
+
 
     $(document).on('keyup', '#search', e => {
         let userInput = e.target.value;
